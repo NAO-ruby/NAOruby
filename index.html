@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="IT用語と意味を組み合わせて、パソコンの基本を楽しく学ぶ神経衰弱ゲーム。">
+  <title>IT用語ペアマッチ！ ～めざせPCマスター～</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand"><span class="brand-icon" aria-hidden="true"><i class="pc-icon"></i></span> IT用語ペアマッチ！</div>
+      <button class="quiet" id="help" type="button"><span class="help-icon" aria-hidden="true">?</span> 遊び方</button>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section id="home">
+      <div class="hero">
+        <div class="hero-copy">
+          <p class="hero-kicker">めざせPCマスター！</p>
+          <h1>IT用語<br><span>ペアマッチ！</span></h1>
+          <p class="hero-description">IT用語とその意味をペアにしよう。<br>遊びながら、パソコンの基本が身につくよ！</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <span class="art-ring"></span>
+          <span class="spark spark-top">✦</span><span class="spark spark-bottom">✦</span>
+          <span class="art-card art-card-term">CPU</span>
+          <div class="mascot">
+            <div class="mascot-frame">
+              <div class="mascot-screen"><i class="eye eye-left"></i><i class="eye eye-right"></i><i class="smile"></i><i class="cheek cheek-left"></i><i class="cheek cheek-right"></i></div>
+              <i class="monitor-light"></i>
+            </div>
+            <div class="mascot-stand"></div><div class="mascot-foot"></div>
+          </div>
+          <span class="art-card art-card-meaning"><span>✓</span> パソコンの頭脳</span>
+        </div>
+      </div>
+
+      <section class="levels setup" aria-labelledby="mode-heading">
+        <h2 id="mode-heading" tabindex="-1">ゲームモードを選ぼう</h2>
+        <fieldset class="option-list mode-options" aria-labelledby="mode-heading">
+          <label class="option">
+            <input type="radio" name="mode" value="cpu" checked>
+            <span><strong>CPU対戦モード</strong><small>CPUより多くのペアを取ろう</small></span>
+          </label>
+          <label class="option">
+            <input type="radio" name="mode" value="timed">
+            <span><strong>タイムアタックモード</strong><small>時間内にすべてのペアをそろえよう</small></span>
+          </label>
+        </fieldset>
+        <fieldset class="option-list strength-options" id="cpu-options">
+          <legend>CPUの強さ</legend>
+          <label class="option"><input type="radio" name="cpu-strength" value="basic" checked> 初級CPU</label>
+          <label class="option"><input type="radio" name="cpu-strength" value="advanced"> 中上級CPU</label>
+        </fieldset>
+      </section>
+
+      <section class="levels" aria-labelledby="level-heading">
+        <h2 id="level-heading" tabindex="-1">難易度を選ぼう</h2>
+        <div class="level-list">
+          <button class="level level-basic" type="button" data-level="basic">
+            <span class="level-icon" aria-hidden="true"><i class="pc-icon"></i></span>
+            <span class="level-content"><strong>初級</strong><span class="level-count">10枚・5ペア</span><span class="level-desc">パソコンの基本用語にチャレンジ</span></span>
+            <span class="play-icon" aria-hidden="true"></span>
+          </button>
+          <button class="level level-advanced" type="button" data-level="advanced">
+            <span class="level-icon" aria-hidden="true"><i class="chip-icon"></i></span>
+            <span class="level-content"><strong>中上級</strong><span class="level-count">20枚・10ペア</span><span class="level-desc">しくみやネットの用語にもチャレンジ</span></span>
+            <span class="play-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+      </section>
+    </section>
+
+    <section id="game" hidden aria-labelledby="game-heading">
+      <div class="game-heading">
+        <div><h1 id="game-heading" tabindex="-1"></h1><p id="game-details"></p></div>
+        <div class="game-actions"><button class="quiet" id="back" type="button">ゲーム選択に戻る</button><button class="quiet" id="restart" type="button">リスタート</button></div>
+      </div>
+      <dl class="stats" id="game-stats">
+        <div id="player-stat" hidden><dt>あなたのペア</dt><dd id="player-pairs"></dd></div>
+        <div id="cpu-stat" hidden><dt>CPUのペア</dt><dd id="cpu-pairs"></dd></div>
+        <div id="turn-stat" hidden><dt>現在のターン</dt><dd id="turn"></dd></div>
+        <div id="progress-stat"><dt>そろえたペア</dt><dd id="progress"></dd></div>
+        <div><dt id="attempt-label">挑戦回数</dt><dd id="attempts"></dd></div>
+        <div id="timer-stat"><dt id="timer-label"></dt><dd id="timer"></dd></div>
+      </dl>
+      <p class="game-status" id="status" role="status"></p>
+      <div class="board" id="board" role="group" aria-label="ペアマッチのカード"></div>
+    </section>
+  </main>
+
+  <dialog id="help-dialog" aria-labelledby="help-title">
+    <div class="dialog-content">
+      <h2 id="help-title">遊び方</h2>
+      <ol class="help-steps">
+        <li>モードを選び、初級か中上級を押してスタートします。カードを2枚めくり、IT用語とその意味を組み合わせます。</li>
+        <li><strong>CPU対戦</strong>では、あなたが先攻です。正解すると同じ人のターンが続き、違う組み合わせは約1.5秒で裏に戻って交代します。最後に多くのペアを取った方が勝ちです。</li>
+        <li><strong>タイムアタック</strong>では、初級は1分、中上級は2分以内にすべてのペアをそろえると勝ちです。</li>
+        <li>正解時の解説を読んでいる間は、ゲームとタイマーが止まります。</li>
+      </ol>
+      <section class="score-rule" aria-labelledby="score-title">
+        <h3 id="score-title">タイムアタックのスコア</h3>
+        <p>スコア ＝ そろえたペア数 × 200 − 不正解の回数 × 30 − 経過秒数（最低0点）</p>
+      </section>
+      <button class="primary" id="close-help" type="button" autofocus>閉じる</button>
+    </div>
+  </dialog>
+
+  <dialog id="learn-dialog" aria-labelledby="learn-title" aria-describedby="learn-text">
+    <div class="dialog-content">
+      <p class="correct-label" id="learn-label">✓ ペア正解！</p>
+      <h2 id="learn-title"></h2>
+      <p class="learn-meaning" id="learn-meaning"></p>
+      <p id="learn-text"></p>
+      <button class="primary" id="continue" type="button" autofocus>ゲームを続ける</button>
+    </div>
+  </dialog>
+
+  <dialog id="clear-dialog" aria-labelledby="clear-title">
+    <div class="confetti" id="confetti" aria-hidden="true"></div>
+    <div class="dialog-content clear-content">
+      <h2 id="clear-title"></h2>
+      <p class="clear-label" id="result-message"></p>
+      <dl class="stats result-stats" id="result-stats">
+        <div id="final-player-stat" hidden><dt>あなたの獲得ペア</dt><dd id="final-player"></dd></div>
+        <div id="final-cpu-stat" hidden><dt>CPUの獲得ペア</dt><dd id="final-cpu"></dd></div>
+        <div id="final-score-stat"><dt>スコア</dt><dd id="final-score"></dd></div>
+        <div><dt id="final-attempt-label">挑戦回数</dt><dd id="final-attempts"></dd></div>
+        <div><dt id="final-time-label"></dt><dd id="final-time"></dd></div>
+      </dl>
+      <div class="result-actions"><button class="primary" id="replay" type="button" autofocus>再挑戦する</button><button class="quiet" id="choose" type="button">ゲーム選択に戻る</button></div>
+    </div>
+  </dialog>
+</body>
+</html>
